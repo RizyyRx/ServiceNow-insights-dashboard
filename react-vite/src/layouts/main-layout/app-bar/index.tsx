@@ -1,4 +1,4 @@
-import { Box, Button, Stack, paperClasses } from '@mui/material';
+import { Box, Button, Stack, paperClasses, Typography } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useBreakpoints } from 'providers/BreakpointsProvider';
@@ -7,6 +7,9 @@ import IconifyIcon from 'components/base/IconifyIcon';
 import Logo from 'components/common/Logo';
 import AppbarActionItems from '../common/AppbarActionItems';
 import SearchBox, { SearchBoxButton } from '../common/search-box/SearchBox';
+import { useAuth } from 'providers/AuthProvider';
+import { useNavigate } from 'react-router';
+import { supabase } from 'supabaseClient';
 
 const AppBar = () => {
   const {
@@ -17,6 +20,19 @@ const AppBar = () => {
   const { up } = useBreakpoints();
   const upSm = up('sm');
   const upMd = up('md');
+
+  const { session } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try{
+      await supabase.auth.signOut();
+      alert('Signed out')
+      navigate('/');
+    } catch (error){
+      console.log('Error signing out:', error);
+    }
+  };
 
   return (
     <MuiAppBar
@@ -71,7 +87,17 @@ const AppBar = () => {
           ) : (
             <SearchBoxButton />
           )}
+          {session?.user?.email && (
+            <Typography variant='body2' sx={{mr:2}}>
+              {session.user.email}
+            </Typography>
+          )}
           <AppbarActionItems />
+          {session && (
+            <Button color='inherit' onClick={handleSignOut} sx={{ ml: 1 }}>
+              Sign Out
+            </Button>
+          )}
         </Stack>
       </Toolbar>
     </MuiAppBar>

@@ -6,6 +6,7 @@ import SettingsPanelProvider from 'providers/SettingsPanelProvider';
 import SettingsProvider from 'providers/SettingsProvider';
 import ThemeProvider from 'providers/ThemeProvider';
 import router from 'routes/router';
+import { AuthProvider } from 'providers/AuthProvider';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -13,7 +14,9 @@ createRoot(document.getElementById('root')!).render(
       <ThemeProvider>
         <BreakpointsProvider>
           <SettingsPanelProvider>
-            <RouterProvider router={router} />
+            <AuthProvider>
+              <RouterProvider router={router} />
+            </AuthProvider>
           </SettingsPanelProvider>
         </BreakpointsProvider>
       </ThemeProvider>

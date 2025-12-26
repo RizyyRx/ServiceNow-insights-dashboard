@@ -6,6 +6,7 @@ import MainLayout from 'layouts/main-layout';
 import Page404 from 'pages/errors/Page404';
 import PageLoader from 'components/loading/PageLoader';
 import paths, { rootPaths } from './paths';
+import ProtectedRoute from './ProtectedRoute';
 
 const Analytics = lazy(() => import('pages/dashboard/Analytics'));
 const UserList = lazy(() => import('pages/users/UserList'));
@@ -32,9 +33,12 @@ export const routes: RouteObject[] = [
       {
         path: '/',
         element: (
-          <MainLayout>
-            <SuspenseOutlet />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout>
+              <SuspenseOutlet />
+            </MainLayout>
+          </ProtectedRoute>
+          
         ),
         children: [
           {
